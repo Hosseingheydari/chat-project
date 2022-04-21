@@ -11,6 +11,7 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     extract($_POST);
+    extract($_POST);// in bod
 
     if (!$username or !$password or "Something") {
         send_error(1);
