@@ -1,7 +1,10 @@
+import { EmojiButton } from '/node_modules/@joeattardi/emoji-button/dist/index.js';
 import url from '/config.js';
 import { addMessage, addSenderMessage, scrollToBottom, deleteSenderMessage, editMessage } from './message.js';
+import upload from './upload.js';
 $(function () {
     $("#edit").hide();
+    $("#error").hide();
     // $("#loader").css('display', 'none');
     // $("main").addClass("flex");
     // $("main").removeClass("hidden");
@@ -53,6 +56,29 @@ $(function () {
             this.style.height = "auto";
             this.style.height = (this.scrollHeight) + "px";
         });
+
+        upload();
+
+        // Emoji picker and trigger
+        const picker = new EmojiButton({
+            theme: "dark",
+            autoHide: false,
+            position: {
+                right: "15%",
+                bottom: "3rem",
+            },
+        });
+        const trigger = $('#emoji');
+
+        picker.on('emoji', selection => {
+            // `selection` object has an `emoji` property
+            // containing the selected emoji
+            $('#message').val(function (i, val) {
+                return val + selection.emoji;
+            })
+        });
+
+        trigger.on('click', () => picker.togglePicker(trigger));
     })
 
     const getChat = (user_data = {}) => {
